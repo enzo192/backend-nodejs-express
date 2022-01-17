@@ -28,28 +28,21 @@ router.get('/:id', (req, res) =>{
 
 router.post('/', (req, res) => {
   const body = req.body;
-  res.json({
-    message: 'created',
-    data: body
-  });
+  const newCategorie = service.create(body);
+  res.status(201).json(newCategorie);
 });
 
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
-    id,
-    message: 'update',
-    data: body
-  });
+  const categorie = service.update(id, body);
+  res.json(categorie);
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  res.json({
-    id,
-    message: 'deleted',
-  });
+  const rta = service.delete(id);
+  res.json(rta);
 });
 
 module.exports = router;
