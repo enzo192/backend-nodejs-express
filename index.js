@@ -1,6 +1,8 @@
 // Traemos express
 const express = require('express');
 const routerApi = require('./routes');
+//me traigo a los midlewares
+const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 // Lo metemos dentro de una variable que vamos a estar referenciando
 const app = express();
@@ -29,9 +31,15 @@ app.get('/nueva-ruta', (req, res) =>{
   res.send('Hola, soy una nueva ruta');
 });
 
+
+routerApi(app);
+//los middlewares siempre se usan luego del router
+// en el orden que los ponga es en el que se ejecutan uno tras otro
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
+
+
 app.listen(port, () =>{
   console.log("My port: " + port);
 });
-
-
-routerApi(app);
