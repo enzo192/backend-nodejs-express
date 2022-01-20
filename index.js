@@ -9,7 +9,7 @@ const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/err
 // Lo metemos dentro de una variable que vamos a estar referenciando
 const app = express();
 // Asignamos una variable con el número en el que queramos asignar el puerto
-const port = 3000;
+const port = process.env.PORT || 3000;//asigna el puerto si viene en una variable de entorno || o el puerto 3000
 
 //para empezar a recibir información en el formato json
 app.use(express.json());
@@ -17,7 +17,8 @@ app.use(express.json());
 const whitelist = ['http://127.0.0.1:5500/frontend.html', 'https://myapp.co'];// con esto se limita el acceso a solo los que yo ponga, solo ellos podran hacer request
 const options = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin) !==1) {//si el origen está dentro de mi wuitelist
+    if (whitelist.includes(origin) || !origin) {
+    // if (whitelist.includes(origin) !==1) {//si el origen está dentro de mi wuitelist
       callback(null, true);//no hay error y permite el acceso
     } else {
       callback(new Error('no permitido'));//si no está dentro de la whitelist no tiene permitido el acceso
